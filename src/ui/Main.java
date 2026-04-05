@@ -41,7 +41,17 @@ public class Main {
 
         System.out.println();
         System.out.println("Initial Enemies:");
-        for (Enemy enemy : context.getActiveEnemies()) {
+        for (Enemy enemy : context.getLevel().getInitialWave().getEnemies()) {
+            System.out.println("- " + enemy.getName()
+                    + " (HP: " + enemy.getStats().getMaxHp()
+                    + ", ATK: " + enemy.getStats().getAttack()
+                    + ", DEF: " + enemy.getStats().getDefense()
+                    + ", SPD: " + enemy.getStats().getSpeed() + ")");
+        }
+
+        System.out.println();
+        System.out.println("Backup Enemies:");
+        for (Enemy enemy : context.getLevel().getBackupWave().getEnemies()) {
             System.out.println("- " + enemy.getName()
                     + " (HP: " + enemy.getStats().getMaxHp()
                     + ", ATK: " + enemy.getStats().getAttack()

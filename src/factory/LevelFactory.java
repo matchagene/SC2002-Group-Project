@@ -15,7 +15,7 @@ public class LevelFactory {
                 return new Level(
                         Difficulty.EASY,
                         new EnemyWave(List.of(
-                                new Goblin(), new Goblin(), new Goblin()
+                                new Goblin("A"), new Goblin("B"), new Goblin("C")
                         )),
                         null
                 );
@@ -23,20 +23,20 @@ public class LevelFactory {
                 return new Level(
                         Difficulty.MEDIUM,
                         new EnemyWave(List.of(
-                                new Goblin(), new Wolf()
+                                new Goblin("A"), new Wolf("A")
                         )),
                         new EnemyWave(List.of(
-                                new Wolf(), new Wolf()
+                                new Wolf("B"), new Wolf("C")
                         ))
                 );
             case HARD:
                 return new Level(
                         Difficulty.HARD,
                         new EnemyWave(List.of(
-                                new Goblin(), new Goblin()
+                                new Goblin("A"), new Goblin("B")
                         )),
                         new EnemyWave(List.of(
-                                new Goblin(), new Wolf(), new Wolf()
+                                new Goblin("C"), new Wolf("A"), new Wolf("B")
                         ))
                 );
             default:

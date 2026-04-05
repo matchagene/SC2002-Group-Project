@@ -4,8 +4,8 @@ import domain.action.Action;
 import domain.action.BasicAttackAction;
 
 public class Goblin extends Enemy {
-    public Goblin() {
-        super("Goblin", new Stats(55, 35, 15, 25));
+    public Goblin(String label) {
+        super("Goblin " + label, new Stats(55, 35, 15, 25));
     }
 
     @Override

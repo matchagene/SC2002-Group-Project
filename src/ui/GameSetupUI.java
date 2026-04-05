@@ -52,14 +52,14 @@ public class GameSetupUI {
     private void displayPlayerOptions() {
         System.out.println("Choose Your Player:");
         System.out.println("1. Warrior");
-        System.out.println("   HP: 260 | Attack: 40 | Defense: 20 | Speed: 30");
+        System.out.println("   HP: 260 | ATK: 40 | DEF: 20 | SPD: 30");
         System.out.println("   Special Skill: Shield Bash");
         System.out.println("   Effect: Deal basic attack damage to one enemy and stun it");
         System.out.println("   for the current turn and the next turn.");
         System.out.println();
 
         System.out.println("2. Wizard");
-        System.out.println("   HP: 200 | Attack: 50 | Defense: 10 | Speed: 20");
+        System.out.println("   HP: 200 | ATK: 50 | DEF: 10 | SPD: 20");
         System.out.println("   Special Skill: Arcane Blast");
         System.out.println("   Effect: Deal basic attack damage to all enemies.");
         System.out.println("   Each enemy defeated adds +10 Attack until end of level.");
