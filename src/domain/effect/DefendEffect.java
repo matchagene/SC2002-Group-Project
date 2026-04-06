@@ -1,6 +1,5 @@
 package domain.effect;
 
-import domain.combatant.Combatant;
 
 public class DefendEffect extends StatusEffect {
 
@@ -9,10 +8,6 @@ public class DefendEffect extends StatusEffect {
         super("Defend", 2);
 
     }
-
- 
-
-
 
     
 }

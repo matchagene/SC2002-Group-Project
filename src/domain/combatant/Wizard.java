@@ -2,8 +2,7 @@ package domain.combatant;
 
 import java.util.List;
 
-import domain.action.Action;
-import domain.action.SpecialSkillAction;
+
 import domain.battle.BattleContext;
 import domain.item.Item;
 
