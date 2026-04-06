@@ -50,6 +50,9 @@ public class Stats {
     public void increaseDefense(int amount) {
         defense += amount;
     }
+    public void decreaseDefense(int amount) {
+        defense -= amount;
+    }
 
     public boolean isAlive() {
         return currentHp > 0;

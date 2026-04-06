@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import domain.battle.BattleContext;
 import domain.battle.SpeedTurnOrderStrategy;
+import domain.combatant.Combatant;
 import domain.combatant.Player;
 import domain.item.Item;
 import domain.level.Difficulty;
@@ -33,11 +34,13 @@ public class GameSetupUI {
         Difficulty difficulty = chooseDifficulty();
 
         Level level = LevelFactory.createLevel(difficulty);
+        List<Combatant> activeCombatants = new ArrayList<>();
+        activeCombatants.addAll(level.getInitialWave().getEnemies());
 
         return new BattleContext(
                 player,
                 level,
-                level.getInitialWave().getEnemies(),
+                activeCombatants,
                 new SpeedTurnOrderStrategy()
         );
     }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import domain.action.Action;
 import domain.effect.StatusEffect;
 import domain.effect.StunEffect;
 
@@ -12,13 +11,11 @@ public abstract class Combatant {
     private final String name;
     private final Stats stats;
     private final List<StatusEffect> statusEffects;
-    private int specialSkillCooldown;
 
     protected Combatant(String name, Stats stats) {
         this.name = name;
         this.stats = stats;
         this.statusEffects = new ArrayList<>();
-        this.specialSkillCooldown = 0;
     }
 
     public String getName() {
@@ -63,19 +60,6 @@ public abstract class Combatant {
         return stats.isAlive();
     }
 
-    public int getSpecialSkillCooldown() {
-        return specialSkillCooldown;
-    }
+   
 
-    public void setSpecialSkillCooldown(int specialSkillCooldown) {
-        this.specialSkillCooldown = specialSkillCooldown;
-    }
-
-    public void decrementCooldown() {
-        if (specialSkillCooldown > 0) {
-            specialSkillCooldown--;
-        }
-    }
-
-    public abstract Action createSpecialSkillAction();
 }
