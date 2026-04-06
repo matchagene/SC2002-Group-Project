@@ -8,6 +8,8 @@ import domain.level.Difficulty;
 import domain.level.EnemyWave;
 import domain.level.Level;
 
+//Setting up difficulty
+
 public class LevelFactory {
     public static Level createLevel(Difficulty difficulty) {
         switch (difficulty) {

@@ -21,6 +21,7 @@ public class Main {
         System.out.println(" Game setup complete!");
         System.out.println("==============================================");
 
+        //Display player 
         Player player = context.getPlayer();
 
         System.out.println("Chosen Player: " + player.getName());
@@ -30,11 +31,14 @@ public class Main {
         System.out.println("Defense: " + player.getStats().getDefense());
         System.out.println("Speed: " + player.getStats().getSpeed());
 
+        //Display items
         System.out.println();
         System.out.println("Items:");
         for (Item item : player.getInventory()) {
             System.out.println("- " + item.getName());
         }
+
+        //Display difficulty
 
         System.out.println();
         System.out.println("Difficulty: " + context.getLevel().getDifficulty());
@@ -61,6 +65,16 @@ public class Main {
 
         System.out.println();
         System.out.println("BattleContext is ready for gameplay module.");
+
+
+
+
+
+
+
+
+
+        
         scanner.close();
     }
 }

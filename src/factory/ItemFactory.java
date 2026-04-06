@@ -5,6 +5,8 @@ import domain.item.Potion;
 import domain.item.PowerStone;
 import domain.item.SmokeBomb;
 
+//Setting up items
+
 public class ItemFactory {
     public static Item createItem(int choice) {
         switch (choice) {
