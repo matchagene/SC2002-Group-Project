@@ -173,8 +173,8 @@ public class BattleEngine {
                     .filter(e -> e instanceof DefendEffect && e.isExpired())
                     .collect(Collectors.toList());
                     
-            for (StatusEffect e : expired) {
-                c.getStats().decreaseDefense(10); 
+            if (!expired.isEmpty()) {
+                c.getStats().decreaseDefense(10 * expired.size()); 
             }
             
             c.removeExpiredEffects();
