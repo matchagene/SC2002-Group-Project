@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import domain.action.SpecialSkillAction;
+import domain.battle.BattleResult;
 import domain.action.Action;
 import domain.combatant.Combatant;
+import domain.combatant.Enemy;
 import domain.combatant.Player;
 import domain.item.Item;
 
@@ -21,6 +23,7 @@ public class User {
         if (instance == null) instance = new User();
         return instance;
     }
+    
 
     public Action selectAction(Player player, List<Action> available) {
         System.out.println("\n" + player.getName() + "'s turn "
@@ -62,6 +65,87 @@ public class User {
         return readInt("Select item (1-" + inventory.size() + "): ", 1, inventory.size()) - 1;
     }
 
+    //print display
+
+    public void printRoundHeader(int round) {
+        System.out.println("\n" + "─".repeat(60));
+        System.out.println("  ROUND " + round);
+        System.out.println("─".repeat(60));
+    }
+
+    public void printTurnOrder(List<Combatant> ordered) {
+        System.out.print("Turn order: ");
+        for (int i = 0; i < ordered.size(); i++) {
+            System.out.print(ordered.get(i).getName() + " (SPD " + ordered.get(i).getStats().getSpeed() + ")");
+            if (i < ordered.size() - 1) System.out.print(" → ");
+        }
+        System.out.println();
+    }
+
+    public void printBackupSpawn(List<Enemy> backup) {
+        System.out.println("\n*** BACKUP SPAWN! New enemies arrive: ***");
+        for (Enemy enemy : backup) {
+            System.out.println("- " + enemy.getName()
+                    + " (HP: " + enemy.getStats().getMaxHp()
+                    + ", ATK: " + enemy.getStats().getAttack()
+                    + ", DEF: " + enemy.getStats().getDefense()
+                    + ", SPD: " + enemy.getStats().getSpeed() + ")");
+        }
+        System.out.println();
+    }
+
+    public void printEndOfRound(Player player, List<Combatant> livingEnemies, int round) {
+        System.out.println("\n--- End of Round " + round + " ---");
+        System.out.printf("  %-10s HP: %d/%d", player.getName(),
+                player.getStats().getCurrentHp(), player.getStats().getMaxHp());
+
+        List<domain.item.Item> items = player.getInventory();
+        if (!items.isEmpty()) {
+            System.out.print("  | Items: ");
+            items.forEach(i -> System.out.print(i.getName() + " "));
+        }
+        if (!player.isSpecialSkillReady()) {
+            System.out.print("  | Cooldown: " + player.getSpecialSkillCooldown() + " rounds");
+        }
+        System.out.println();
+
+        for (Combatant e : livingEnemies) {
+            System.out.print("  " + e.getName() + " HP: " + e.getStats().getCurrentHp());
+            if (!e.getStatusEffects().isEmpty()) {
+                System.out.print(" [" + e.getStatusEffects().stream()
+                        .map(eff -> eff.getName()).reduce((a, b) -> a + ", " + b).orElse("") + "]");
+            }
+            System.out.println();
+        }
+        System.out.println("─".repeat(60));
+    }
+
+    public int promptReplayMenu() {
+        System.out.println("\nWhat would you like to do?");
+        System.out.println("  1. Replay with the same settings");
+        System.out.println("  2. Start a new game");
+        System.out.println("  3. Exit");
+        return readInt("Enter choice (1-3): ", 1, 3);
+    }
+
+    public void printGameResult(BattleResult result, Player player, int rounds) {
+        System.out.println("─".repeat(60));
+        if (result == BattleResult.VICTORY) {
+            System.out.println("  *** VICTORY! Congratulations, you defeated all enemies! ***");
+            System.out.printf("  Remaining HP: %d/%d  |  Total Rounds: %d%n",
+                    player.getStats().getCurrentHp(), player.getStats().getMaxHp(), rounds);
+            if (!player.getInventory().isEmpty()) {
+                System.out.print("  Unused items: ");
+                player.getInventory().forEach(i -> System.out.print(i.getName() + " "));
+                System.out.println();
+            }
+        } else {
+            System.out.println("  *** DEFEATED. Don't give up — try again! ***");
+            System.out.println("  Total Rounds Survived: " + rounds);
+        }
+        System.out.println("─".repeat(60));
+    }
+
     private int readInt(String prompt, int min, int max) {
         while (true) {
             System.out.print(prompt);
@@ -75,4 +159,6 @@ public class User {
             }
         }
     }
+
+
 }

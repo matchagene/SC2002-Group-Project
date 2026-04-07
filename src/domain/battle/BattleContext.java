@@ -9,6 +9,7 @@ import domain.combatant.Player;
 import domain.level.Level;
 import ui.User;
 
+
 public class BattleContext {
     private final Player player;
     private final Level level;

@@ -5,6 +5,7 @@ import java.util.List;
 import domain.battle.BattleContext;
 import domain.combatant.Combatant;
 import domain.combatant.Player;
+import domain.effect.SmokeBombEffect;
 
 public class BasicAttackAction implements Action {
     @Override
@@ -18,15 +19,24 @@ public class BasicAttackAction implements Action {
         if (targets.isEmpty()) return "No targets available.";
 
         Combatant target;
+        int damage;
 
         if (actor instanceof Player){
             target = context.selectTarget(targets);
+            damage = Math.max(0, actor.getStats().getAttack() - target.getStats().getDefense());
+
         }
         else {
             target = context.getPlayer();
-        }
+            if (target.hasEffect(SmokeBombEffect.class)){
+                damage = 0;
+            }
+            else{
+                damage = Math.max(0, actor.getStats().getAttack() - target.getStats().getDefense());
 
-        int damage = Math.max(0, actor.getStats().getAttack() - target.getStats().getDefense());
+            }
+        }
+        
         int hpBefore = target.getStats().getCurrentHp();
         target.getStats().takeDamage(damage);
 
