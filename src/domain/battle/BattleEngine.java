@@ -49,21 +49,9 @@ public class BattleEngine {
                 // Process Smoke Bomb at the start of the turn
                 processTurnEffects(combatant);
 
-                // Process STUN
-                if (combatant.hasEffect(StunEffect.class)) {
+                // Process stun
+                if (!combatant.canAct()) {
                     System.out.println(combatant.getName() + " -> STUNNED: Turn skipped");
-                    
-                    combatant.getStatusEffects().stream()
-                        .filter(e -> e instanceof StunEffect)
-                        .findFirst()
-                        .ifPresent(e -> {
-                            e.decrementDuration(); 
-                            if (e.isExpired()) {
-                                System.out.println("  [Stun expires for " + combatant.getName() + "]");
-                            }
-                        });
-    
-                    combatant.removeExpiredEffects(); 
                     continue; 
                 }
 
@@ -151,6 +139,11 @@ public class BattleEngine {
                 if (effect.isExpired()) {
                     System.out.println("  [Smoke Bomb effect expires for " + combatant.getName() + "]");
                 }
+            } else if (effect instanceof StunEffect) {
+                effect.decrementDuration();
+                if (effect.isExpired()) {
+                    System.out.println("  [Stun expires for " + combatant.getName() + "]");
+                }
             }
         }
         
@@ -172,7 +165,7 @@ public class BattleEngine {
                     .collect(Collectors.toList());
                     
             if (!expired.isEmpty()) {
-                c.getStats().decreaseDefense(10 * expired.size()); 
+                c.getStats().decreaseDefense(DefendEffect.DEFENSE_BOOST * expired.size()); 
             }
             
             c.removeExpiredEffects();
