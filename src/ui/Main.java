@@ -93,7 +93,6 @@ public class Main {
             }
 
             System.out.println();
-            System.out.println("BattleContext is ready for gameplay module.");
 
             // Gameplay
             while (true) {
