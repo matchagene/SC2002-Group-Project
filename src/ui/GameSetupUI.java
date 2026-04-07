@@ -35,6 +35,8 @@ public class GameSetupUI {
 
         Level level = LevelFactory.createLevel(difficulty);
         List<Combatant> activeCombatants = new ArrayList<>();
+        
+        activeCombatants.add(player);
         activeCombatants.addAll(level.getInitialWave().getEnemies());
 
         return new BattleContext(

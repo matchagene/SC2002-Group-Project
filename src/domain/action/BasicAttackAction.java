@@ -1,11 +1,13 @@
 package domain.action;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import domain.battle.BattleContext;
 import domain.combatant.Combatant;
 import domain.combatant.Player;
 import domain.effect.SmokeBombEffect;
+import domain.combatant.Enemy;      
 
 public class BasicAttackAction implements Action {
     @Override
@@ -22,7 +24,10 @@ public class BasicAttackAction implements Action {
         int damage;
 
         if (actor instanceof Player){
-            target = context.selectTarget(targets);
+            List<Combatant> validTargets = targets.stream()
+                .filter(c -> c instanceof Enemy && c.isAlive())
+                .collect(Collectors.toList());
+            target = context.selectTarget(validTargets);
             damage = Math.max(0, actor.getStats().getAttack() - target.getStats().getDefense());
 
         }
@@ -41,9 +46,9 @@ public class BasicAttackAction implements Action {
         target.getStats().takeDamage(damage);
 
         StringBuilder sb = new StringBuilder();
-        sb.append(actor.getName()).append(" → BasicAttack → ").append(target.getName())
-          .append(": HP: ").append(hpBefore).append(" → ").append(target.getStats().getCurrentHp())
-          .append(" (dmg: ").append(actor.getStats().getAttack()).append("−").append(target.getStats().getDefense())
+        sb.append(actor.getName()).append(" -> BasicAttack -> ").append(target.getName())
+          .append(": HP: ").append(hpBefore).append(" -> ").append(target.getStats().getCurrentHp())
+          .append(" (dmg: ").append(actor.getStats().getAttack()).append("-").append(target.getStats().getDefense())
           .append("=").append(damage).append(")");
 
         if (!target.isAlive()) {

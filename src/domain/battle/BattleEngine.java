@@ -51,7 +51,7 @@ public class BattleEngine {
 
                 // 2. Process STUN
                 if (combatant.hasEffect(StunEffect.class)) {
-                    System.out.println(combatant.getName() + " → STUNNED: Turn skipped");
+                    System.out.println(combatant.getName() + " -> STUNNED: Turn skipped");
                     
                     combatant.getStatusEffects().stream()
                         .filter(e -> e instanceof StunEffect)
@@ -117,22 +117,12 @@ public class BattleEngine {
     }
 
     private void executePlayerTurn(Player p) {
-        List<Action> available = getAvailableActions(p);
-        Action chosen = cli.selectAction(p, available);
+        Action chosen = cli.selectAction(p, playerActions);
         
         String log = chosen.execute(p, context); 
         System.out.println(log);
     }
 
-    private List<Action> getAvailableActions(Player p) {
-        List<Action> available = new ArrayList<>();
-        for (Action a : playerActions) {
-            if (a instanceof UseItemAction && p.getInventory().isEmpty()) continue;
-            if (a instanceof SpecialSkillAction && !p.isSpecialSkillReady()) continue;
-            available.add(a);
-        }
-        return available;
-    }
 
     private void executeEnemyTurn(Enemy e) {
         Action enemyAttack = new BasicAttackAction();

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import domain.action.SpecialSkillAction;
+import domain.action.UseItemAction;
 import domain.battle.BattleResult;
 import domain.action.Action;
 import domain.combatant.Combatant;
@@ -37,8 +38,21 @@ public class User {
             }
             System.out.printf("  %d. %s%s%n", i + 1, a.getName(), suffix);
         }
-        int choice = readInt("Enter choice (1-" + available.size() + "): ", 1, available.size());
-        return available.get(choice - 1);
+        while (true) {
+            int choice = readInt("Enter choice (1-" + available.size() + "): ", 1, available.size());
+            Action chosen = available.get(choice - 1);
+
+            if (chosen instanceof SpecialSkillAction && !player.isSpecialSkillReady()) {
+                System.out.println("That skill is currently on cooldown! Please choose a different action.");
+                continue; 
+            }
+            if (chosen instanceof UseItemAction && player.getInventory().isEmpty()) {
+                System.out.println("Your inventory is empty! Please choose a different action.");
+                continue; 
+            }
+
+            return chosen;
+        }   
     }
 
     public Combatant selectTarget(List<Combatant> candidates) {
@@ -59,7 +73,7 @@ public class User {
     public int selectItem(List<Item> inventory) {
         System.out.println("Your items:");
         for (int i = 0; i < inventory.size(); i++) {
-            System.out.printf("  %d. %-12s — %s%n", i + 1,
+            System.out.printf("  %d. %-12s - %s%n", i + 1,
                     inventory.get(i).getName(), inventory.get(i).getDescription());
         }
         return readInt("Select item (1-" + inventory.size() + "): ", 1, inventory.size()) - 1;
@@ -77,7 +91,7 @@ public class User {
         System.out.print("Turn order: ");
         for (int i = 0; i < ordered.size(); i++) {
             System.out.print(ordered.get(i).getName() + " (SPD " + ordered.get(i).getStats().getSpeed() + ")");
-            if (i < ordered.size() - 1) System.out.print(" → ");
+            if (i < ordered.size() - 1) System.out.print(" -> ");
         }
         System.out.println();
     }
@@ -140,7 +154,7 @@ public class User {
                 System.out.println();
             }
         } else {
-            System.out.println("  *** DEFEATED. Don't give up — try again! ***");
+            System.out.println("  *** DEFEATED. Don't give up - try again! ***");
             System.out.println("  Total Rounds Survived: " + rounds);
         }
         System.out.println("─".repeat(60));

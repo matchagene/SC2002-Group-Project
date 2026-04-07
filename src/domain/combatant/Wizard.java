@@ -1,7 +1,7 @@
 package domain.combatant;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import domain.battle.BattleContext;
 import domain.item.Item;
@@ -15,7 +15,11 @@ public class Wizard extends Player {
 
     @Override
     protected String useSpecialSkill(BattleContext context) {
-        List<Combatant> enemies = context.getActive();
+        List<Combatant> enemies = context.getActive().stream()
+            .filter(c -> c instanceof Enemy && c.isAlive())
+            .collect(Collectors.toList());
+
+
         if (enemies.isEmpty()) return "No enemies to target!";
 
         StringBuilder sb = new StringBuilder();
@@ -27,8 +31,8 @@ public class Wizard extends Player {
             int hpBefore = enemy.getStats().getCurrentHp();
             enemy.getStats().takeDamage(damage);
             sb.append("  ").append(enemy.getName())
-              .append(" HP: ").append(hpBefore).append(" → ").append(enemy.getStats().getCurrentHp())
-              .append(" (dmg: ").append(context.getPlayer().getStats().getAttack()).append("−").append(enemy.getStats().getDefense())
+              .append(" HP: ").append(hpBefore).append(" -> ").append(enemy.getStats().getCurrentHp())
+              .append(" (dmg: ").append(context.getPlayer().getStats().getAttack()).append("-").append(enemy.getStats().getDefense())
               .append("=").append(damage).append(")");
             if (!enemy.isAlive()) {
                 sb.append(" ✗ ELIMINATED");
@@ -40,7 +44,7 @@ public class Wizard extends Player {
         if (killBonus > 0) {
             context.getPlayer().getStats().increaseAttack(killBonus);
             sb.append("Arcane kill bonus: ATK increased by ").append(killBonus)
-              .append(" → ").append(context.getPlayer().getStats().getAttack()).append(" (lasts until end of level)");
+              .append(" -> ").append(context.getPlayer().getStats().getAttack()).append(" (lasts until end of level)");
         }
 
         return sb.toString().trim();

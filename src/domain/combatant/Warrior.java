@@ -1,7 +1,7 @@
 package domain.combatant;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import domain.battle.BattleContext;
 import domain.effect.StunEffect;
@@ -18,7 +18,10 @@ public class Warrior extends Player {
 
     @Override
     protected String useSpecialSkill(BattleContext context) {
-        List<Combatant> enemies = context.getActive();
+        List<Combatant> enemies = context.getActive().stream()
+            .filter(c -> c instanceof Enemy && c.isAlive())
+            .collect(Collectors.toList());
+
         if (enemies.isEmpty()) return "No enemies to target!";
 
         Combatant target = context.selectTarget(enemies);
@@ -28,8 +31,8 @@ public class Warrior extends Player {
         StringBuilder sb = new StringBuilder();
         sb.append(getName()).append(" uses Shield Bash on ").append(target.getName())
           .append("! HP: ").append(target.getStats().getCurrentHp() + damage)
-          .append(" → ").append(target.getStats().getCurrentHp())
-          .append(" (dmg: ").append(context.getPlayer().getStats().getAttack()).append("−").append(target.getStats().getDefense())
+          .append(" -> ").append(target.getStats().getCurrentHp())
+          .append(" (dmg: ").append(context.getPlayer().getStats().getAttack()).append("-").append(target.getStats().getDefense())
           .append("=").append(damage).append(")");
 
         if (target.isAlive()) {
