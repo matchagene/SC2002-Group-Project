@@ -52,7 +52,7 @@ public class BasicAttackAction implements Action {
           .append("=").append(damage).append(")");
 
         if (!target.isAlive()) {
-            sb.append(" ✗ ELIMINATED");
+            sb.append(" X ELIMINATED");
         }
         return sb.toString();
     }

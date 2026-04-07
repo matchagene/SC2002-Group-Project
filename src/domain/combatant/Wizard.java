@@ -35,16 +35,19 @@ public class Wizard extends Player {
               .append(" (dmg: ").append(context.getPlayer().getStats().getAttack()).append("-").append(enemy.getStats().getDefense())
               .append("=").append(damage).append(")");
             if (!enemy.isAlive()) {
-                sb.append(" ✗ ELIMINATED");
+                sb.append(" X ELIMINATED");
                 killBonus += 10;
             }
             sb.append("\n");
         }
 
         if (killBonus > 0) {
+            int oldAttack = context.getPlayer().getStats().getAttack();
             context.getPlayer().getStats().increaseAttack(killBonus);
+            int newAttack = context.getPlayer().getStats().getAttack();
             sb.append("Arcane kill bonus: ATK increased by ").append(killBonus)
-              .append(" -> ").append(context.getPlayer().getStats().getAttack()).append(" (lasts until end of level)");
+              .append(" (ATK: ").append(oldAttack).append(" -> ").append(newAttack).append(")")
+              .append(" (lasts until end of level)");
         }
 
         return sb.toString().trim();

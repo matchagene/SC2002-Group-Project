@@ -131,11 +131,9 @@ public class BattleEngine {
     }
 
     private boolean trySpawnBackup() {
-        // FIXED: Check if getBackupWave() is not null (Easy difficulty has a null backup wave)
         if (!backupSpawned && context.getLevel().getBackupWave() != null) {
             backupSpawned = true;
             
-            // FIXED: Extract the List<Enemy> using getEnemies() from the EnemyWave object
             List<Enemy> backupEnemies = context.getLevel().getBackupWave().getEnemies();
             
             context.getActive().addAll(backupEnemies);
