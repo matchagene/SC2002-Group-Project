@@ -1,13 +1,11 @@
 package domain.action;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import domain.battle.BattleContext;
 import domain.combatant.Combatant;
 import domain.combatant.Player;
 import domain.effect.SmokeBombEffect;
-import domain.combatant.Enemy;      
 
 public class BasicAttackAction implements Action {
     @Override
@@ -22,15 +20,13 @@ public class BasicAttackAction implements Action {
 
         Combatant target;
         int damage;
-
         if (actor instanceof Player){
-            List<Combatant> validTargets = targets.stream()
-                .filter(c -> c instanceof Enemy && c.isAlive())
-                .collect(Collectors.toList());
+            List<Combatant> validTargets = context.getLivingEnemies(); 
             target = context.selectTarget(validTargets);
             damage = Math.max(0, actor.getStats().getAttack() - target.getStats().getDefense());
-
         }
+
+        
         else {
             target = context.getPlayer();
             if (target.hasEffect(SmokeBombEffect.class)){

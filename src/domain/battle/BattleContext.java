@@ -2,9 +2,10 @@ package domain.battle;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import domain.combatant.Combatant;
+import domain.combatant.Enemy;
 import domain.combatant.Player;
 import domain.level.Level;
 import ui.User;
@@ -37,6 +38,12 @@ public class BattleContext {
 
     public TurnOrderStrategy getTurnOrderStrategy() {
         return turnOrderStrategy;
+    }
+
+    public List<Combatant> getLivingEnemies() {
+        return active.stream()
+                .filter(c -> c instanceof Enemy && c.isAlive())
+                .collect(Collectors.toList());
     }
 
     public Combatant selectTarget(List<Combatant> candidates) {

@@ -1,7 +1,6 @@
 package domain.combatant;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import domain.battle.BattleContext;
 import domain.effect.StunEffect;
@@ -18,9 +17,7 @@ public class Warrior extends Player {
 
     @Override
     protected String useSpecialSkill(BattleContext context) {
-        List<Combatant> enemies = context.getActive().stream()
-            .filter(c -> c instanceof Enemy && c.isAlive())
-            .collect(Collectors.toList());
+        List<Combatant> enemies = context.getLivingEnemies();
 
         if (enemies.isEmpty()) return "No enemies to target!";
 

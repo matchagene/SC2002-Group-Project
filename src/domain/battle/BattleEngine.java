@@ -69,14 +69,14 @@ public class BattleEngine {
 
                 if (!context.getPlayer().isAlive()) {
                     cleanupDefendEffects();
-                    cli.printEndOfRound(context.getPlayer(), getLivingEnemies(), roundNumber);
+                    cli.printEndOfRound(context.getPlayer(), context.getLivingEnemies(), roundNumber);
                     return BattleResult.DEFEAT;
                 }
                 
-                if (getLivingEnemies().isEmpty()) {
+                if (context.getLivingEnemies().isEmpty()) {
                     if (!trySpawnBackup()) {
                         cleanupDefendEffects();
-                        cli.printEndOfRound(context.getPlayer(), getLivingEnemies(), roundNumber);
+                        cli.printEndOfRound(context.getPlayer(), context.getLivingEnemies(), roundNumber);
                         return BattleResult.VICTORY;
                     }
                 }
@@ -84,10 +84,10 @@ public class BattleEngine {
 
             // Process def at the end of the round
             cleanupDefendEffects();
-            cli.printEndOfRound(context.getPlayer(), getLivingEnemies(), roundNumber);
+            cli.printEndOfRound(context.getPlayer(), context.getLivingEnemies(), roundNumber);
 
             // Backup spawn check at end of round
-            if (getLivingEnemies().isEmpty()) {
+            if (context.getLivingEnemies().isEmpty()) {
                 if (!trySpawnBackup()) {
                     return BattleResult.VICTORY;
                 }
@@ -96,11 +96,6 @@ public class BattleEngine {
     }
 
 
-    private List<Combatant> getLivingEnemies() {
-        return context.getActive().stream()
-                .filter(c -> c instanceof Enemy && c.isAlive())
-                .collect(Collectors.toList());
-    }
 
     private void executePlayerTurn(Player p) {
         Action chosen = cli.selectAction(p, playerActions);
@@ -153,7 +148,7 @@ public class BattleEngine {
     private void cleanupDefendEffects() {
         List<Combatant> all = new ArrayList<>();
         all.add(context.getPlayer());
-        all.addAll(getLivingEnemies());
+        all.addAll(context.getLivingEnemies());
 
         for (Combatant c : all) {
             c.getStatusEffects().stream()
