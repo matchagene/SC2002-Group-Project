@@ -25,13 +25,11 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // OUTER LOOP: Main Menu & Setup
+        // Main Menu & Setup
         while (true) {
             GameSetupUI setupUI = new GameSetupUI(scanner);
             BattleContext context = setupUI.startNewGame();
 
-            // --- SAVE INITIAL STATE FOR REPLAY ---
-            // (We must save these BEFORE the battle starts, otherwise items are consumed!)
             String initialPlayerName = context.getPlayer().getName();
             List<String> initialItems = new ArrayList<>();
             for (Item item : context.getPlayer().getInventory()) {
@@ -82,7 +80,6 @@ public class Main {
 
             System.out.println();
             System.out.println("Backup Enemies:");
-            // FIXED: Added a null check so Easy Difficulty doesn't crash here!
             if (context.getLevel().getBackupWave() != null) {
                 for (Enemy enemy : context.getLevel().getBackupWave().getEnemies()) {
                     System.out.println("- " + enemy.getName()
@@ -98,7 +95,7 @@ public class Main {
             System.out.println();
             System.out.println("BattleContext is ready for gameplay module.");
 
-            // INNER LOOP: Gameplay & Replay handling
+            // Gameplay
             while (true) {
                 BattleEngine engine = new BattleEngine(context);
                 BattleResult result = engine.run();
@@ -108,28 +105,24 @@ public class Main {
                 int choice = cli.promptReplayMenu();
                 if (choice == 1) {
                     System.out.println("\nRestarting with the same settings...\n");
-                    // Rebuilds a fresh context with full HP and reset items!
                     context = rebuildContext(initialPlayerName, initialItems, initialDifficulty);
-                    continue; // Restarts the INNER loop (Runs the battle again)
+                    continue; 
                     
                 } else if (choice == 2) {
                     System.out.println("\nReturning to main menu...\n");
-                    break; // Breaks INNER loop, goes back to OUTER loop (GameSetupUI)
+                    break;
                     
                 } else {
                     System.out.println("\nThanks for playing! Goodbye.");
                     scanner.close();
-                    return; // Completely exits the application
+                    return; 
                 }
             }
         }
     }
 
-    /**
-     * Safely rebuilds a completely fresh BattleContext using the saved initial settings.
-     */
+  
     private static BattleContext rebuildContext(String playerName, List<String> initialItems, Difficulty difficulty) {
-        // 1. Rebuild fresh items
         List<Item> freshItems = new ArrayList<>();
         for (String itemName : initialItems) {
             if (itemName.equals("Potion")) freshItems.add(ItemFactory.createItem(1));
@@ -137,7 +130,6 @@ public class Main {
             else if (itemName.equals("Smoke Bomb")) freshItems.add(ItemFactory.createItem(3));
         }
 
-        // 2. Rebuild Player
         Player freshPlayer;
         if (playerName.equals("Warrior")) {
             freshPlayer = PlayerFactory.createWarrior(freshItems);
@@ -145,15 +137,12 @@ public class Main {
             freshPlayer = PlayerFactory.createWizard(freshItems);
         }
 
-        // 3. Rebuild Level
         Level freshLevel = LevelFactory.createLevel(difficulty);
 
-        // 4. Rebuild Active Combatants
         List<Combatant> activeCombatants = new ArrayList<>();
         activeCombatants.add(freshPlayer);
         activeCombatants.addAll(freshLevel.getInitialWave().getEnemies());
 
-        // 5. Return the brand new context
         return new BattleContext(freshPlayer, freshLevel, activeCombatants, new SpeedTurnOrderStrategy());
     }
 }

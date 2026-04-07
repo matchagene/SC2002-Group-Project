@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import domain.battle.BattleContext;
+import domain.effect.ArcaneBlastBuffEffect;
 import domain.item.Item;
 
 public class Wizard extends Player {
@@ -25,7 +26,8 @@ public class Wizard extends Player {
         StringBuilder sb = new StringBuilder();
         sb.append(getName()).append(" unleashes Arcane Blast!\n");
 
-        int killBonus = 0;
+        int kills = 0;
+
         for (Combatant enemy : enemies) {
             int damage = Math.max(0, context.getPlayer().getStats().getAttack() - enemy.getStats().getDefense());
             int hpBefore = enemy.getStats().getCurrentHp();
@@ -36,16 +38,22 @@ public class Wizard extends Player {
               .append("=").append(damage).append(")");
             if (!enemy.isAlive()) {
                 sb.append(" X ELIMINATED");
-                killBonus += 10;
+                kills++;
             }
             sb.append("\n");
         }
 
-        if (killBonus > 0) {
+        if (kills > 0) {
+            int totalBonus = kills * ArcaneBlastBuffEffect.ATTACK_BONUS;
             int oldAttack = context.getPlayer().getStats().getAttack();
-            context.getPlayer().getStats().increaseAttack(killBonus);
+            context.getPlayer().getStats().increaseAttack(totalBonus);
             int newAttack = context.getPlayer().getStats().getAttack();
-            sb.append("Arcane kill bonus: ATK increased by ").append(killBonus)
+
+            if (!context.getPlayer().hasEffect(ArcaneBlastBuffEffect.class)) {
+                context.getPlayer().addStatusEffect(new ArcaneBlastBuffEffect());
+            }
+
+            sb.append("Arcane kill bonus: ATK increased by ").append(totalBonus)
               .append(" (ATK: ").append(oldAttack).append(" -> ").append(newAttack).append(")")
               .append(" (lasts until end of level)");
         }

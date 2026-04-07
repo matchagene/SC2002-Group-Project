@@ -31,7 +31,7 @@ public class BattleEngine {
         ));
     }
 
-    // ── Main battle loop ───────────────────────────────────────────────────
+    // Main battle 
 
     public BattleResult run() {
         System.out.println("\n  STARTING GAME !  "); 
@@ -46,10 +46,10 @@ public class BattleEngine {
             for (Combatant combatant : ordered) {
                 if (!combatant.isAlive()) continue;
 
-                // 1. Process Smoke Bomb at the START of the turn!
+                // Process Smoke Bomb at the start of the turn
                 processTurnEffects(combatant);
 
-                // 2. Process STUN
+                // Process STUN
                 if (combatant.hasEffect(StunEffect.class)) {
                     System.out.println(combatant.getName() + " -> STUNNED: Turn skipped");
                     
@@ -67,19 +67,18 @@ public class BattleEngine {
                     continue; 
                 }
 
-                // 3. Execute normal turn
+                // Execute normal turn
                 if (combatant instanceof Player p) {
                     executePlayerTurn(p);
                 } else if (combatant instanceof Enemy e) {
                     executeEnemyTurn(e);
                 }
 
-                // 4. Decrement special skill cooldown
+                // Decrease special skill cooldown
                 if (combatant instanceof Player p) {
                     p.decrementSpecialSkillCooldown();
                 }
 
-                // Check for game-ending conditions mid-round
                 if (!context.getPlayer().isAlive()) {
                     cleanupDefendEffects();
                     cli.printEndOfRound(context.getPlayer(), getLivingEnemies(), roundNumber);
@@ -95,7 +94,7 @@ public class BattleEngine {
                 }
             }
 
-            // Process DEFEND at the end of the round
+            // Process def at the end of the round
             cleanupDefendEffects();
             cli.printEndOfRound(context.getPlayer(), getLivingEnemies(), roundNumber);
 
@@ -108,7 +107,6 @@ public class BattleEngine {
         }
     }
 
-    // ── Private helpers ────────────────────────────────────────────────────
 
     private List<Combatant> getLivingEnemies() {
         return context.getActive().stream()
