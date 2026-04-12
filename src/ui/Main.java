@@ -99,7 +99,8 @@ public class Main {
                 BattleEngine engine = new BattleEngine(context);
                 BattleResult result = engine.run();
 
-                cli.printGameResult(result, context.getPlayer(), engine.getRoundNumber());
+                cli.printGameResult(result, context.getPlayer(), engine.getRoundNumber(), context.getLivingEnemies().size()
+);
 
                 int choice = cli.promptReplayMenu();
                 if (choice == 1) {

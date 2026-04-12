@@ -142,7 +142,7 @@ public class User {
         return readInt("Enter choice (1-3): ", 1, 3);
     }
 
-    public void printGameResult(BattleResult result, Player player, int rounds) {
+    public void printGameResult(BattleResult result, Player player, int rounds, int enemiesRemaining) {
         System.out.println("─".repeat(60));
         if (result == BattleResult.VICTORY) {
             System.out.println("  *** VICTORY! Congratulations, you defeated all enemies! ***");
@@ -155,7 +155,7 @@ public class User {
             }
         } else {
             System.out.println("  *** DEFEATED. Don't give up - try again! ***");
-            System.out.println("  Total Rounds Survived: " + rounds);
+            System.out.println(" Enemies remaining: " + enemiesRemaining + " | Total Rounds Survived: " + rounds);
         }
         System.out.println("─".repeat(60));
     }
