@@ -3,6 +3,7 @@ package domain.item;
 import domain.battle.BattleContext;
 import domain.combatant.Combatant;
 
+//Potions initialize
 public class Potion implements Item {
 
     private static final int HEAL_AMOUNT = 100;

@@ -3,7 +3,7 @@ package domain.item;
 import domain.battle.BattleContext;
 import domain.combatant.Combatant;
 import domain.combatant.Player;
-
+//PowerStone initialise
 public class PowerStone implements Item {
     @Override
     public String getName() {

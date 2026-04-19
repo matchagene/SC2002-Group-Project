@@ -97,7 +97,7 @@ public class BattleEngine {
     }
 
 
-
+    //Player's turn
     private void executePlayerTurn(Player p) {
         Action chosen = cli.selectAction(p, playerActions);
         
@@ -105,7 +105,7 @@ public class BattleEngine {
         System.out.println(log);
     }
 
-
+    //Enemy's turn
     private void executeEnemyTurn(Enemy e) {
         Action enemyAttack = new BasicAttackAction();
         String log = enemyAttack.execute(e, context);

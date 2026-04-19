@@ -3,7 +3,7 @@ package domain.item;
 import domain.battle.BattleContext;
 import domain.combatant.Combatant;
 import domain.effect.SmokeBombEffect;
-
+//Smokebomb initialise
 public class SmokeBomb implements Item {
     @Override
     public String getName() {
