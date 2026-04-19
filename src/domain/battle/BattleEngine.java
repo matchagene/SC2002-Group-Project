@@ -111,7 +111,7 @@ public class BattleEngine {
         String log = enemyAttack.execute(e, context);
         System.out.println(log);
     }
-
+    //respawn
     private boolean trySpawnBackup() {
         if (!backupSpawned && context.getLevel().getBackupWave() != null) {
             backupSpawned = true;

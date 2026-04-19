@@ -5,6 +5,7 @@ public class Level {
     private final EnemyWave initialWave;
     private final EnemyWave backupWave;
 
+    //difficult + Enemy wave 
     public Level(Difficulty difficulty, EnemyWave initialWave, EnemyWave backupWave) {
         this.difficulty = difficulty;
         this.initialWave = initialWave;
